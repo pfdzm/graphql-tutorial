@@ -1,19 +1,30 @@
 // this code emulates a client-side request to our GraphQL API
 const fetch = require("node-fetch");
 
-fetch("http://localhost:4000/graphql", {
+const author = "pfdzm";
+const content = "fuck it dude, let's go bowling";
+const query = `
+  mutation CreateMessage($input: MessageInput) {
+      createMessage(input: $input) {
+        id
+      }
+    }
+  `;
+
+fetch("http://localhost:4000", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json"
   },
   body: JSON.stringify({
-    query: `query {
-      getDie(numSides: 6) {
-        rollOnce
-        roll(numRolls: 3)
+    query,
+    variables: {
+      input: {
+        author,
+        content
       }
-    }`
+    }
   })
 })
   .then(r => r.json())
