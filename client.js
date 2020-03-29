@@ -1,11 +1,5 @@
-// this code emulates a client-side request to our GraphQL API 
+// this code emulates a client-side request to our GraphQL API
 const fetch = require("node-fetch");
-
-const dice = 3;
-const sides = 6;
-const query = `query RollDice($dice: Int!, $sides: Int) {
-    rollDice(numDice: $dice, numSides: $sides)
-}`;
 
 fetch("http://localhost:4000/graphql", {
   method: "POST",
@@ -14,8 +8,12 @@ fetch("http://localhost:4000/graphql", {
     Accept: "application/json"
   },
   body: JSON.stringify({
-    query,
-    variables: { dice, sides }
+    query: `query {
+      getDie(numSides: 6) {
+        rollOnce
+        roll(numRolls: 3)
+      }
+    }`
   })
 })
   .then(r => r.json())
